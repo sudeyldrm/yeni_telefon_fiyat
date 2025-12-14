@@ -1,0 +1,36 @@
+﻿brand,model,price_tl,ram_gb,storage_gb,battery_mah,camera_mp,screen_inch,is_5g,os
+Apple,iPhone 11,24999,4,64,3110,12,6.1,0,iOS
+Apple,iPhone 12,29999,4,128,2815,12,6.1,1,iOS
+Apple,iPhone 13,34999,6,128,3240,12,6.1,1,iOS
+Apple,iPhone 14,39999,6,128,3279,12,6.1,1,iOS
+Apple,iPhone 15,49999,6,128,3349,48,6.1,1,iOS
+Apple,iPhone 15 Pro,69999,8,256,3274,48,6.1,1,iOS
+Apple,iPhone 15 Pro Max,84999,8,256,4422,48,6.7,1,iOS
+Samsung,Galaxy A14,8999,4,64,5000,50,6.6,0,Android
+Samsung,Galaxy A24,10999,6,128,5000,50,6.6,0,Android
+Samsung,Galaxy A34,15999,8,128,5000,48,6.6,1,Android
+Samsung,Galaxy A54,19999,8,256,5000,50,6.4,1,Android
+Samsung,Galaxy S21 FE,21999,8,128,4500,12,6.4,1,Android
+Samsung,Galaxy S22,28999,8,256,3700,50,6.1,1,Android
+Samsung,Galaxy S23,35999,8,256,3900,50,6.1,1,Android
+Samsung,Galaxy S23 Ultra,59999,12,512,5000,200,6.8,1,Android
+Xiaomi,Redmi 10,7499,4,64,5000,50,6.5,0,Android
+Xiaomi,Redmi Note 11,9999,6,128,5000,50,6.43,0,Android
+Xiaomi,Redmi Note 12,12999,8,128,5000,50,6.67,1,Android
+Xiaomi,Redmi Note 12 Pro,16999,8,256,5000,108,6.67,1,Android
+Xiaomi,Redmi Note 13 Pro,21999,12,256,5100,200,6.67,1,Android
+Xiaomi,Mi 11 Lite,17999,8,128,4250,64,6.55,1,Android
+POCO,X3 Pro,13999,8,256,5160,48,6.67,1,Android
+POCO,F4,24999,12,256,4500,64,6.67,1,Android
+POCO,F5,29999,12,256,5000,64,6.67,1,Android
+OPPO,A16,8999,4,64,5000,13,6.52,0,Android
+OPPO,Reno 8,23999,8,256,4500,50,6.43,1,Android
+OPPO,Reno 10,29999,12,256,5000,64,6.7,1,Android
+Realme,C55,9999,6,128,5000,64,6.72,0,Android
+Realme,GT Master,19999,8,256,4300,64,6.43,1,Android
+Realme,GT Neo 5,32999,16,512,5000,50,6.74,1,Android
+Vivo,Y20,7999,4,64,5000,13,6.51,0,Android
+Vivo,Y36,12999,8,128,5000,50,6.64,0,Android
+Vivo,V25,22999,12,256,4500,64,6.44,1,Android
+Huawei,P30 Lite,10999,6,128,3340,48,6.15,0,Android
+Huawei,Nova 9,21999,8,256,4300,50,6.57,1,Android
