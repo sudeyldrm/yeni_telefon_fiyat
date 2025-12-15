@@ -1,61 +1,46 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 from pydantic import BaseModel
-import numpy as np
 import joblib
 import os
 import pandas as pd
 from typing import List, Dict
 
-
 app = FastAPI(title="Phone Price Range API")
 
-# CORS (Flutter Web için şart)
+# ✅ CORS (Flutter Web için)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],          # prod'da domain yazarsın
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+
+
+# ✅ Preflight OPTIONS isteğini garanti karşıla (Flutter Web fetch için çok işe yarar)
+@app.options("/{path:path}")
+def options_handler(path: str):
+    return Response(status_code=200)
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-MODEL_PATH  = os.path.join(BASE_DIR, "..", "model", "logistic_model.pkl")
-SCALER_PATH = os.path.join(BASE_DIR, "..", "model", "scaler.pkl")
-
+# ===============================
+# MODEL (CSV tabanlı YENİ model)
+# ===============================
+MODEL_PATH = os.path.join(BASE_DIR, "..", "model", "price_range_model.pkl")
 model = joblib.load(MODEL_PATH)
-scaler = joblib.load(SCALER_PATH)
-
-# Modelin beklediği feature sırası (CSV’deki sırayla!)
-FEATURES = [
-    "battery_power", "blue", "clock_speed", "dual_sim", "fc", "four_g",
-    "int_memory", "m_dep", "mobile_wt", "n_cores", "pc", "px_height",
-    "px_width", "ram", "sc_h", "sc_w", "talk_time", "three_g",
-    "touch_screen", "wifi"
-]
 
 class PredictRequest(BaseModel):
-    battery_power: int
-    blue: int
-    clock_speed: float
-    dual_sim: int
-    fc: int
-    four_g: int
-    int_memory: int
-    m_dep: float
-    mobile_wt: int
-    n_cores: int
-    pc: int
-    px_height: int
-    px_width: int
-    ram: int
-    sc_h: int
-    sc_w: int
-    talk_time: int
-    three_g: int
-    touch_screen: int
-    wifi: int
+    ram_gb: int
+    storage_gb: int
+    battery_mah: int
+    camera_mp: int
+    screen_inch: float
+    is_5g: int
+    os: str
 
 @app.get("/health")
 def health():
@@ -63,19 +48,24 @@ def health():
 
 @app.post("/predict")
 def predict(req: PredictRequest):
-    x = np.array([[getattr(req, f) for f in FEATURES]], dtype=float)
-    x_scaled = scaler.transform(x)
-    pred = int(model.predict(x_scaled)[0])
-    proba = model.predict_proba(x_scaled)[0].tolist()
+    X = [{
+        "ram_gb": req.ram_gb,
+        "storage_gb": req.storage_gb,
+        "battery_mah": req.battery_mah,
+        "camera_mp": req.camera_mp,
+        "screen_inch": req.screen_inch,
+        "is_5g": req.is_5g,
+        "os": req.os,
+    }]
 
-    return {
-        "price_range": pred,
-        "probabilities": proba
-    }
+    pred = int(model.predict(X)[0])
+    proba = model.predict_proba(X)[0].tolist()
+
+    return {"price_range": pred, "probabilities": proba}
+
 # ===============================
 # PHONE LIST (UI DATA)
 # ===============================
-
 def load_phones_csv() -> List[Dict]:
     df = pd.read_csv(os.path.join(BASE_DIR, "..", "data", "telefonlar.csv"))
     df = df.where(pd.notnull(df), None)
@@ -97,11 +87,9 @@ def load_phones_csv() -> List[Dict]:
         })
     return phones
 
-
 @app.get("/phones")
 def get_phones():
     return load_phones_csv()
-
 
 @app.get("/phones/{phone_id}")
 def get_phone(phone_id: int):
